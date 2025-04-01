@@ -1,24 +1,39 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
-export const ProducerDashboard = () => {
+
+
+export default function ProducerDashboard() {
     const navigate = useNavigate();
     const [showInput, setShowInput] = useState(false);
-    const [showAddProducer, setShowAddProducer] = useState(true);
+    const [showAddingProducer, setAddingProducer] = useState(true);
+    const [email, setEmail] = useState(""); // משתנה לאחסון הערך שהוזן
+    const handleSubmit = () => {
+        if (!email) {  // אם המייל ריק
+            alert("אנא הזן כתובת מייל");  // הצגת הודעת שגיאה
+            return;  // לא מעבירים לעמוד אם המייל ריק
+        }
+        navigate("/ProducerDetails", { state: { email } });  // אם המייל לא ריק, לעבור לעמוד
+    };
 
     return (
-        <>
-            <h1>Producer Dashboard כניסת מפיקות</h1>
-            {
-                showAddProducer && (<button onClick={() => navigate('/AddingProducer') }>הוספת מפיקה</button>
-            )
-            }
-            <button onClick={() => {setShowInput(true);setShowAddProducer(false)} }>מפיקה קיימת</button>
+        <div>
+            <h1>Producer Dashboard</h1>
+            <button onClick={() => { setShowInput(true); setAddingProducer(false); }}>מפיקה קיימת</button>
             {showInput && (
                 <div>
-                    <input type="text" placeholder="הכנס כתובת מייל להזדהות" />
-                    <button  onClick={() => navigate('/ProducersEventList')}>send</button>
+                    <input
+                        type="email"
+                        placeholder="הכנס כתובת מייל להזדהות"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <button onClick={handleSubmit}>שלח</button>
                 </div>
-            )}       
-         </>)
+            )}
+            {showAddingProducer && (
+                <button onClick={() => navigate('/AddingProducer')}>הוספת מפיקה</button>
+            )}
+        </div>
+    );
 }
-
