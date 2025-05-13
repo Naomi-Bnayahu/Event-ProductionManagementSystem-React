@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {getProducerByEmail} from "../services/ProducerApi"; 
 
 
 export default function ProducerDashboard() {
@@ -7,10 +8,16 @@ export default function ProducerDashboard() {
     const [showInput, setShowInput] = useState(false);
     const [showAddingProducer, setAddingProducer] = useState(true);
     const [email, setEmail] = useState(""); // משתנה לאחסון הערך שהוזן
-    const handleSubmit = () => {
+   
+    const handleSubmit = async() =>  {
         if (!email) {  // אם המייל ריק
             alert("אנא הזן כתובת מייל");  // הצגת הודעת שגיאה
             return;  // לא מעבירים לעמוד אם המייל ריק
+        }
+        const emailExists = await getProducerByEmail(email); // בדיקה אם המייל קיים
+        if (emailExists.length === 0) {  // אם המייל לא קיים
+            alert("המייל לא קיים במערכת");  // הצגת הודעת שגיאה
+            return;  // לא מעבירים לעמוד אם המייל לא קיים
         }
         navigate("/ProducerDetails", { state: { email } });  // אם המייל לא ריק, לעבור לעמוד
     };

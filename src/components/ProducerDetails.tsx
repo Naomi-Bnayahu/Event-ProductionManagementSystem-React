@@ -13,7 +13,7 @@ export const ProducerDetails = () => {
         description: ""
     });
     const [showUpdateDetails, setShowUpdateDetails] = useState(false);
-
+    const [showBottumUpdate, setShowBottumUpdate] = useState(true);
     const email = location.state?.email || ""; // מקבלים את האימייל שהוזן
     useEffect(() => {
         const getByEmail = async () => {
@@ -69,9 +69,14 @@ export const ProducerDetails = () => {
             <h2>אימייל: {producer.email}</h2>
             <h2>טלפון: {producer.phone}</h2>
             <h2>תיאור: {producer.description}</h2>
-            <button onClick={() => setShowUpdateDetails(true)}>עריכת פרטי משתמש</button>
-            {showUpdateDetails &&
+            {!showUpdateDetails && (
+    <button onClick={() => setShowUpdateDetails(true)}>
+        ערוך פרטי משתמש
+    </button>
+)}
+                {showUpdateDetails &&
                 <>
+
                     <input
                         type="text"
                         name="name"
@@ -100,7 +105,7 @@ export const ProducerDetails = () => {
                         onChange={handleInputChange}
                         placeholder="תיאור"
                     />
-                    <button onClick={() => { setShowUpdateDetails(false); funcUpdateProducer(); }}>שמור</button>
+                    <button onClick={() => { setShowUpdateDetails(false); funcUpdateProducer();setShowBottumUpdate(true) }}>שמור</button>
                 </>}
             <ProducerEventList email={email} />
         </div>

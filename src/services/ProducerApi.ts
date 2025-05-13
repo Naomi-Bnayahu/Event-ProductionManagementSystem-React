@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000"; // כתובת השרת שלך
 
-// שליפת אירועים לפי מייל
+// שליפת מפיקה לפי מייל
 export const getProducerByEmail = async (email: string) => {
   try {
     const response = await axios.get(`${API_URL}/eventProducer/${email}`); // 🔹 שינוי הנתיב בהתאם לשרת
